@@ -1,19 +1,76 @@
-import { Card, CardContent, Typography, Box, TextField, InputAdornment, Button } from "@mui/material"
+import { Card, CardContent, Typography, Box, TextField, InputAdornment, Button, Snackbar, Alert } from "@mui/material"
 import { Name } from "../Name/Name"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PasswordIcon from '@mui/icons-material/Password';
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect} from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import api from '../../api.ts'
+import { type Error } from "../../model/SnackError.ts";
+import { type LoginUser } from "../../model/User.ts";
+
+
 
 export function Login(){
-    const [usuario, setUsuario] = useState("")
-    const [senha, setSenha] = useState("")
+    const [user, setUser] = useState<LoginUser>({
+        username: '',
+        password: ''
+    })
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [error, setError] = useState<Error>({
+        openError: !!location.state?.successMessage,
+        errorMessage: location.state?.successMessage || ""
+    })
+    
 
-    function handleLogin(e: React.SubmitEvent){
+    const handleLogin = async (e: React.SubmitEvent) => {
         e.preventDefault()
-        console.log(usuario)
-        console.log(senha)
+        
+        const formData = new URLSearchParams();
+        formData.append('username', user.username); 
+        formData.append('password', user.password);
+
+        try {
+            const response = await api.post('/token', formData, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            
+            const { access_token } = response.data;
+            
+            
+            localStorage.setItem('token', access_token);
+            
+            
+            console.log('login feito com sucesso')
+            console.log('token: ', localStorage.getItem('token'))
+
+        } catch (error) {
+            console.error(error);
+            setError({
+                openError: true,
+                errorMessage: "Login ou senha incorretos."
+            });
+        }
     }
+
+    useEffect(()=>{
+        if(location.state?.successMessage){
+            window.history.replaceState({}, document.title)
+        }
+    }, [location])
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>){
+       const {name, value} = e.target
+
+       setUser((prev) => ({
+        ...prev,
+        [name]: value
+       }))
+    }
+
 
     return (
         <Card sx={{
@@ -52,8 +109,9 @@ export function Login(){
                     }}
                     label="Login"
                     placeholder="Seu login"
-                    value={usuario}
-                    onChange={(e) => setUsuario(e.target.value)}
+                    name="username"
+                    value={user.username}
+                    onChange={(e) => handleChange(e)}
                     required
                     />
 
@@ -70,8 +128,9 @@ export function Login(){
                     }}
                     label="Senha"
                     placeholder="********"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
+                    name="password"
+                    value={user.password}
+                    onChange={(e) => handleChange(e)}
                     required
                     
                     />
@@ -90,6 +149,17 @@ export function Login(){
                     </Box>
                 </Box>
                 
+                <Snackbar
+                    open={error.openError}
+                    onClose={() => setError({openError: false, errorMessage: ''})}
+                    autoHideDuration={4000}
+                    message={error.errorMessage}
+                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                >
+                    <Alert severity="success" variant="filled">
+                        {error.errorMessage}
+                    </Alert>
+                </Snackbar>
 
             </CardContent>
         </Card>

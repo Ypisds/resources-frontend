@@ -1,21 +1,73 @@
-import { Card, CardContent, Typography, Box, TextField, InputAdornment, Button } from "@mui/material"
+import { Card, CardContent, Typography, Box, TextField, InputAdornment, Button, Snackbar, Alert } from "@mui/material"
 import { Name } from "../Name/Name"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PasswordIcon from '@mui/icons-material/Password';
 import { useState } from "react";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { Link } from "react-router-dom";
+import { type CreateUser } from "../../model/User";
+import api from '../../api.ts'
+import { useNavigate } from "react-router-dom";
+import { type Error } from "../../model/SnackError.ts";
+
+
 
 export function Register(){
-    const [usuario, setUsuario] = useState("")
-    const [senha, setSenha] = useState("")
-    const [nome, setNome] = useState("")
+    const [user, setUser] = useState<CreateUser>({
+        name: '',
+        password: '',
+        username: ''
+    })
+    const [error, setError] = useState<Error>({
+        openError: false,
+        errorMessage: ''
+    })
+    const navigate = useNavigate()
 
-    function handleLogin(e: React.SubmitEvent){
+
+    function handleRegister(e: React.SubmitEvent){
         e.preventDefault()
-        console.log(usuario)
-        console.log(senha)
+        
+        api({
+            method: 'post',
+            url: '/create-user',
+            data: user
+        }).then((response) => {
+            if(response.status === 201 || response.status === 200) {
+                navigate('/login', {replace: true, state: {successMessage: "Usuário criado com sucesso"}})
+            }
+        }).catch((e) => {
+           if(e.status === 409){
+                setError({
+                    openError: true,
+                    errorMessage: "Login já utilizado"
+                })
+           }
+           else{
+                setError({
+                    openError: true,
+                    errorMessage: "Ocorreu um erro ao criar o usuário"
+                })
+           }
+        })
     }
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) {
+        const {name, value} = e.target
+
+        setUser((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    function handleClose(){
+        setError({
+            errorMessage: '',
+            openError: false
+        })
+    }
+
 
     return (
         <Card sx={{
@@ -39,7 +91,7 @@ export function Register(){
                     flexDirection: 'column',
                     gap: 3
                 }}
-                onSubmit={(e) => handleLogin(e)}
+                onSubmit={(e) => handleRegister(e)}
                 >
                     <TextField type="text"
                     variant="outlined"
@@ -53,9 +105,10 @@ export function Register(){
                         }
                     }}
                     label="Nome"
+                    name="name"
                     placeholder="Seu nome"
-                    value={usuario}
-                    onChange={(e) => setUsuario(e.target.value)}
+                    value={user.name}
+                    onChange={(e) => handleChange(e)}
                     required
                     />
 
@@ -72,8 +125,9 @@ export function Register(){
                     }}
                     label="Login"
                     placeholder="Seu login"
-                    value={usuario}
-                    onChange={(e) => setUsuario(e.target.value)}
+                    name="username"
+                    value={user.username}
+                    onChange={(e) => handleChange(e)}
                     required
                     />
 
@@ -90,8 +144,9 @@ export function Register(){
                     }}
                     label="Senha"
                     placeholder="********"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
+                    name="password"
+                    value={user.password}
+                    onChange={(e) => handleChange(e)}
                     required
                     
                     />
@@ -112,6 +167,19 @@ export function Register(){
                 
 
             </CardContent>
+
+            <Snackbar
+                open={error.openError}
+                onClose={handleClose}
+                message={error.errorMessage}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+            >
+                <Alert severity="error" variant="filled">
+                    {error.errorMessage}
+                </Alert>
+            </Snackbar>
         </Card>
+
+        
     )
 }
