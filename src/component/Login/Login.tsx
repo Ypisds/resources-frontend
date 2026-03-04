@@ -44,8 +44,7 @@ export function Login(){
             localStorage.setItem('token', access_token);
             
             
-            console.log('login feito com sucesso')
-            console.log('token: ', localStorage.getItem('token'))
+            navigate('/')
 
         } catch (error) {
             console.error(error);
