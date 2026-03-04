@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+# 🚀 FastResources - Frontend (Web App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **FastResources** é uma Single Page Application (SPA) desenvolvida para o gerenciamento inteligente de materiais didáticos. Construída com **React** e **Material UI**, a plataforma oferece uma interface limpa, responsiva e focada na experiência do usuário, permitindo o cadastro de vídeos, PDFs e links com o auxílio de Inteligência Artificial.
 
-Currently, two official plugins are available:
+[![Aplicação em Produção](https://img.shields.io/badge/Acessar_Aplicação-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://resources-frontend.onrender.com/)
+[![Repositório Frontend](https://img.shields.io/badge/Repositório_Frontend-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ypisds/resources-frontend)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📸 Interface e Funcionalidades
 
-## Expanding the ESLint configuration
+### 1. Login e Autenticação
+Acesso seguro integrado ao backend via **JWT**. O token é armazenado localmente para manter a sessão do usuário ativa durante a navegação pelas rotas protegidas.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<p align="center">
+  <img src="./docs/login.png" alt="Tela de Login do FastResources" width="600"/>
+</p>
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2. Dashboard Dinâmico (Listagem e CRUD)
+Listagem paginada de recursos utilizando tabelas expansíveis (`Collapse` do Material UI). Cada linha revela detalhes como Descrição, Link e Tags visuais. A interface conta com botões de ação rápida para edição e exclusão de itens.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+<p align="center">
+  <img src="./docs/dashboard.png" alt="Dashboard com lista de recursos" width="800"/>
+</p>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 3. Smart Assist (Integração com IA)
+O grande diferencial da plataforma: ao cadastrar ou editar um recurso, o usuário digita apenas o Título e o Tipo, e clica no botão **Sugestão (IA)**. O frontend entra em estado de *loading* e preenche automaticamente a descrição e as tags recomendadas, consumindo a API de LLM do backend.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+<p align="center">
+  <img src="./docs/modal-ia.png" alt="Modal de criação com botão de IA" width="600"/>
+</p>
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🎯 Principais Funcionalidades Implementadas
+
+- [x] **Autenticação e Rotas Protegidas:** Uso de React Router Dom para redirecionamento.
+- [x] **Smart Assist (IA):** Chamada de API para autocompletar formulários com feedback visual (`CircularProgress`).
+- [x] **Busca Avançada com Debounce:** Pesquisa em tempo real otimizada para não sobrecarregar o backend.
+- [x] **Gerenciamento de Tags Dinâmicas:** Adição de tags pressionando `Enter` e remoção visual com botões de `Chip` do MUI.
+- [x] **Layout Responsivo e Componentizado:** Reutilização de modais (Dialogs) para Criação, Edição e Confirmação de Exclusão.
+
+---
+
+## 📦 Dependências e Stack
+
+O projeto foi inicializado utilizando o **Vite** para um build rápido e otimizado. As principais bibliotecas utilizadas incluem:
+
+* **React (v18):** Biblioteca base para a interface.
+* **TypeScript:** Adição de tipagem estática para maior segurança e previsibilidade do código.
+* **Material UI (@mui/material & @mui/icons-material):** Biblioteca de componentes para garantir um design system moderno e padronizado.
+* **Axios:** Cliente HTTP configurado com interceptadores para envio automático do token JWT.
+* **React Router Dom (v6):** Gerenciamento de rotas e navegação da SPA.
+
+---
+
+## 🛠️ Como Executar Localmente
+
+### Pré-requisitos
+* **Node.js** (v18 ou superior)
+* **NPM** ou **Yarn**
+* O backend do [FastResources API](link-para-seu-backend-aqui) deve estar rodando para consumo de dados.
+
+### Instalação
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/Ypisds/resources-frontend.git](https://github.com/Ypisds/resources-frontend.git)
+   cd resources-frontend
+   ```
+2. **Instale as dependências**:
+  ```bash
+  npm install
+  ```
+3. **Configure as variáveis de ambiente localmente**
+   Para acessar o backend localmente, coloque a seguinte variável de ambiente no `.env`
+   ```
+   VITE_API_URL=http://localhost:8000
+   ```
+4. **Inicie o frontend localmente**:
+   ```bash
+   npm run dev
+   ```
+   Acesse a aplicação em `http://localhost:5173`.
+
+## Autor
+Feito por **Thiago Brito** para o desafio técnico da VLab
