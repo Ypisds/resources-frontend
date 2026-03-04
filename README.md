@@ -3,7 +3,7 @@
 O **FastResources** é uma Single Page Application (SPA) desenvolvida para o gerenciamento inteligente de materiais didáticos. Construída com **React** e **Material UI**, a plataforma oferece uma interface limpa, responsiva e focada na experiência do usuário, permitindo o cadastro de vídeos, PDFs e links com o auxílio de Inteligência Artificial.
 
 [![Aplicação em Produção](https://img.shields.io/badge/Acessar_Aplicação-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://resources-frontend.onrender.com/)
-[![Repositório Frontend](https://img.shields.io/badge/Repositório_Frontend-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ypisds/resources-frontend)
+[![Repositório Backend](https://img.shields.io/badge/Repositório_Frontend-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ypisds/resources-backend)
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
@@ -32,7 +32,14 @@ Listagem paginada de recursos utilizando tabelas expansíveis (`Collapse` do Mat
 O grande diferencial da plataforma: ao cadastrar ou editar um recurso, o usuário digita apenas o Título e o Tipo, e clica no botão **Sugestão (IA)**. O frontend entra em estado de *loading* e preenche automaticamente a descrição e as tags recomendadas, consumindo a API de LLM do backend.
 
 <p align="center">
-  <img src="./docs/modal-ia.png" alt="Modal de criação com botão de IA" width="600"/>
+  <img src="./docs/ia_assist.gif" alt="IA gerando descrição e tags" width="600"/>
+</p>
+
+### 4. Busca com Filtros:
+Além da paginação, o FastResources permite a pesquisa de Recursos com base em filtros como o **nome** e o **tipo** do recurso
+
+<p align="center">
+  <img src="./docs/busca.png" alt="IA gerando descrição e tags" width="600"/>
 </p>
 
 ---
