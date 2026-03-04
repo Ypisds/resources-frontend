@@ -96,4 +96,4 @@ O projeto foi inicializado utilizando o **Vite** para um build rápido e otimiza
    Acesse a aplicação em `http://localhost:5173`.
 
 ## Autor
-Feito por **Thiago Brito** para o desafio técnico da VLab
+Feito por **Thiago Brito** para o desafio técnico da V-Lab
